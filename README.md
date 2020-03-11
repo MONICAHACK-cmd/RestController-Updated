@@ -23,7 +23,7 @@ CREATE TABLE `CTODETAILS` (
 
 Db Connection possible  with MysQL Workbench App:
 
-hostname :  ppmagile.cja1wagvqrjw.us-east-2.rds.amazonaws.com
-port : 3306
-username : nighthunter
-password : Awsrdspassword
+- hostname :  ppmagile.cja1wagvqrjw.us-east-2.rds.amazonaws.com
+- port : 3306
+- username : nighthunter
+- password : Awsrdspassword
