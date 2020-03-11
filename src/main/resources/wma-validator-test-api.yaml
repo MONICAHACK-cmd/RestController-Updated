@@ -1,0 +1,155 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: OpenAPI Validation Demo
+  description: Demo for contract validation
+  contact:
+    name: API Development Team
+    email: DL-APIDevelopment@ubs.com
+servers:
+  - url: https://test.ubs.com/api
+    description: Dev URL for API
+  - url: https://qa.ubs.com/api
+    description: QA URL for API
+tags:
+  - name: card-controller
+    description: Card Controller
+    
+paths:
+  /cards/order-card:
+    post:
+      tags:
+        - card-controller
+      summary: Submit the order for card
+      operationId: orderCard
+      requestBody:
+        required: true
+        description: Order card
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardOrderRequest'
+      responses:
+        '200':
+          description: Order submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardOrderResponse'
+        '400':
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/400ErrorModel'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/404ErrorModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/500ErrorModel'
+        '503':
+          description: Service unavailable error
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/503ErrorModel'
+        default:
+          description: Error occured
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/ErrorModel'                
+      
+components:
+  schemas:
+    CardOrderResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+        statusMessage:
+          type: string
+        referenceNumber:
+          type: string
+    CardOrderRequest:
+      type: object
+      required:
+        - accountNumber
+        - cardType
+        - deliveryMethod
+      properties:
+        accountNumber:
+          type: string
+          description: 10-digit account number of the cardholder
+          example: 4126772851
+        cardType:
+          type: string
+          description: Type of the network payment processors
+          example: VISA, Mastercard
+        deliveryMethod:
+          type: string
+          description: Delivery method to be used to ship the card order
+          example: FirstClass, Express, NextDay  
+    400ErrorModel:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          description: Error code
+          example: 400
+        errorMessage:
+          type: string
+          description: Error message
+          example: Bad request
+    404ErrorModel:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          description: Error code
+          example: 404
+        errorMessage:
+          type: string
+          description: Error message
+          example: Resource not found
+    500ErrorModel:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          description: Error code
+          example: 500
+        errorMessage:
+          type: string
+          description: Error message
+          example: Internal server error
+    503ErrorModel:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          description: Error code
+          example: 503
+        errorMessage:
+          type: string
+          description: Error message
+          example: Service unavailable
+    ErrorModel:
+      type: object
+      properties:
+        errorCode:
+          type: integer
+          description: Error code
+          example: 500
+        errorMessage:
+          type: string
+          description: Error message
+          example: Error occurred
